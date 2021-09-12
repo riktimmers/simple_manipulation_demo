@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+ 
+
+  <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
+  <xacro:include filename="$(find franka_description)/robots/hand.xacro"/>
+  <xacro:include filename="$(find franka_description)/robots/camera.xacro" />
+
+  <!-- for simulation -->
+  <xacro:include filename="$(find franka_description)/robots/panda.gazebo.xacro"/>
+  <xacro:include filename="$(find franka_description)/robots/panda.control.xacro"/>
+  <!-- end for simulation -->
+
+  <xacro:panda_arm xyz="0 0 0" rpy="0 0 0" connected_to="world" arm_id="panda"/>
+  <xacro:hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8" safety_distance="0.03"/>
+
+  <!-- for simulation -->
+  <xacro:panda_gazebo arm_id="panda"/>
+  <xacro:panda_control arm_id="panda" load_hand="true" />
+  <!-- end for simulation -->
+
+<!-- Everthing below is added to the existing xacro -->
+<link name="eef_link" />
+
+<joint name="joint_hand_eef" type="fixed"> 
+  <parent link="panda_hand" />
+  <child link="eef_link" />
+  <origin xyz="0 0 0.1" rpy="0 0 0" />
+</joint>
+
+<gazebo>
+  <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+      <arm>
+        <arm_name>panda</arm_name>
+        <palm_link>panda_link7</palm_link>
+        <gripper_link>panda_rightfinger</gripper_link>
+        <gripper_link>panda_leftfinger</gripper_link>
+      </arm>
+    <forces_angle_tolerance>100</forces_angle_tolerance>
+    <update_rate>4</update_rate>
+    <grip_count_threshold>1</grip_count_threshold>
+    <max_grip_count>5</max_grip_count>
+    <release_tolerance>0.005</release_tolerance> <!--0.005 -->
+    <disable_collisions_on_attach>true</disable_collisions_on_attach>
+    <contact_topic>__default_topic__</contact_topic>
+  </plugin>
+</gazebo> 
+
+<xacro:add_camera name="camera" parent_link="panda_hand" xyz="0.035 0 0.03" rpy="${pi} ${-pi/2} 0" />
+<xacro:add_camera name="overhead_camera" parent_link="world" xyz="1.0 0 1.5" rpy="0 ${pi/3} ${pi}" />
+
+</robot>
