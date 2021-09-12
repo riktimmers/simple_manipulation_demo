@@ -3,7 +3,7 @@ This is a simple manipulation demo, using ROS, MoveIt, PCL and Tensorflow to sor
 
 Build and run instructions: 
 ```
-#: TODO
+# TODO
 ```
 
 # Franka Description
