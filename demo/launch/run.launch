@@ -1,0 +1,14 @@
+<launch>
+  <include file="$(find panda_simulation)/launch/simulation.launch" />
+
+  <node name="perception" pkg="perception" type="perception_node" output="screen" />
+
+  <!-- image subscriber is needed for sim, for some reason wait_for_message does not give latest image -->
+  <node name="image_subscriber" pkg="perception" type="image_subscriber.py" />
+  <node name="spawn_dropbox" pkg="moveit_planning" type="spawn_dropbox.py" output="screen" />
+
+  <node name="moveit_planning" pkg="moveit_planning" type="moveit_planning_node" output="screen" />
+  <node name="object_recognition" pkg="object_recognition" type="object_recognition_server.py" output="screen" />
+  <node name="moveit_planning_grasp" pkg="moveit_planning" type="grasp.py" output="screen" />
+
+</launch>

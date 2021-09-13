@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import rospy 
 from tensorflow.keras import models
 from sensor_msgs.msg import Image

@@ -15,6 +15,9 @@ print("Waiting for object_recognition server")
 object_recognition_client.wait_for_server()
 print("Connected")
 
+print("Sleeping for 6 seconds to make sure gazebo is started and the arm initialized")
+rospy.sleep(6)
+
 arm = Arm() # For giving commands to the MoveIt node
 
 while True: # Just endlessly keep going until no objects are found
